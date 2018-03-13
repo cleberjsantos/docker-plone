@@ -2,8 +2,8 @@ FROM python:2.7-slim
 MAINTAINER Erico Andrei <ericof@plone.org>
 
 RUN mkdir -p /plone/logs /plone/.cache /data
-ENV PWD=/plone
-ENV XDG_CACHE_HOME=/plone/.cache
+ENV PWD=/plone \
+    XDG_CACHE_HOME=/plone/.cache
 
 WORKDIR /plone
 
@@ -13,8 +13,9 @@ COPY requirements/ /plone/requirements
 COPY admin.* /plone/
 COPY etc /plone/etc
 
-ENV buildDeps="python-dev build-essential libssl-dev libbz2-dev"
-ENV runDeps="libmagic-dev"
+ENV buildDeps="python-dev build-essential libssl-dev libbz2-dev" \
+    runDeps="libmagic-dev"
+
 RUN  apt-get update && apt-get install -y --no-install-recommends $buildDeps && \
      apt-get install -y --no-install-recommends $runDeps && \
      ./bin/pip install -r /plone/requirements/base_requirements.txt && \
